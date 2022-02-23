@@ -19,6 +19,7 @@ class _AlarmPageState extends State<AlarmPage> {
   TextEditingController bodyController = TextEditingController();
   DateTime _alarmTime;
   String _alarmTimeString;
+  bool _isRepeatSelected = false;
   AlarmHelper _alarmHelper = AlarmHelper();
   Future<List<AlarmInfo>> _alarms;
   List<AlarmInfo> _currentAlarms;
@@ -212,11 +213,17 @@ class _AlarmPageState extends State<AlarmPage> {
                                                       TextStyle(fontSize: 32),
                                                 ),
                                               ),
-                                              // ListTile(
-                                              //   title: Text('Repeat'),
-                                              //   trailing: Icon(
-                                              //       Icons.arrow_forward_ios),
-                                              // ),
+                                              ListTile(
+                                                title: Text('Repeat'),
+                                                trailing: Switch(
+                                                  onChanged: (value) {
+                                                    setModalState(() {
+                                                      _isRepeatSelected = value;
+                                                    });
+                                                  },
+                                                  value: _isRepeatSelected,
+                                                ),
+                                              ),
                                               // ListTile(
                                               //   onTap: () {},
                                               //   title: Text('Sound'),
@@ -269,7 +276,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                               FloatingActionButton.extended(
                                                 onPressed: () => onSaveAlarm(
                                                     titleController.text,
-                                                    bodyController.text),
+                                                    bodyController.text, _isRepeatSelected),
                                                 icon: Icon(Icons.alarm),
                                                 label: Text('Save'),
                                               ),
@@ -324,7 +331,8 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   void scheduleAlarm(
-      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo,
+      {bool isRepeating}) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
@@ -345,15 +353,28 @@ class _AlarmPageState extends State<AlarmPage> {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.schedule(
+    if (isRepeating)
+      await flutterLocalNotificationsPlugin.showDailyAtTime(
+          0,
+          alarmInfo.title,
+          alarmInfo.body,
+          Time(
+              scheduledNotificationDateTime.hour,
+              scheduledNotificationDateTime.minute,
+              scheduledNotificationDateTime.second),
+          platformChannelSpecifics);
+    else
+      await flutterLocalNotificationsPlugin.schedule(
         0,
         alarmInfo.title,
         alarmInfo.body,
         scheduledNotificationDateTime,
         platformChannelSpecifics);
+    
+    
   }
 
-  void onSaveAlarm(String title, String body) {
+  void onSaveAlarm(String title, String body, bool _isRepeating) {
     DateTime scheduleAlarmDateTime;
     if (_alarmTime.isAfter(DateTime.now()))
       scheduleAlarmDateTime = _alarmTime;
@@ -366,7 +387,7 @@ class _AlarmPageState extends State<AlarmPage> {
         title: title == '' ? "Alarm" : title,
         body: body == '' ? "It is the time!" : body);
     _alarmHelper.insertAlarm(alarmInfo);
-    scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    scheduleAlarm(scheduleAlarmDateTime, alarmInfo, isRepeating: _isRepeating);
     Navigator.pop(context);
     loadAlarms();
   }
