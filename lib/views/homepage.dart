@@ -13,6 +13,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isRepeatSelected = false;
+  void onChange(bool value) {
+    setState(() {
+      isRepeatSelected = value;
+    });
+
+    print(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,13 +71,15 @@ class _HomePageState extends State<HomePage> {
   Widget buildMenuButton(MenuInfo currentMenuInfo) {
     return Consumer<MenuInfo>(
       builder: (BuildContext context, MenuInfo value, Widget child) {
-        return FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(topRight: Radius.circular(32))),
-          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
-          color: currentMenuInfo.menuType == value.menuType
-              ? CustomColors.menuBackgroundColor
-              : Colors.transparent,
+        return TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(topRight: Radius.circular(32))),
+            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
+            backgroundColor: currentMenuInfo.menuType == value.menuType
+                ? CustomColors.menuBackgroundColor
+                : Colors.transparent,
+          ),
           onPressed: () {
             var menuInfo = Provider.of<MenuInfo>(context, listen: false);
             menuInfo.updateMenu(currentMenuInfo);

@@ -1,6 +1,5 @@
 import 'package:clock_app/models/alarm_info.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 final String tableAlarm = 'alarm';
 final String columnId = 'id';
@@ -54,6 +53,7 @@ class AlarmHelper {
   void insertAlarm(AlarmInfo alarmInfo) async {
     var db = await this.database;
     var result = await db.insert(tableAlarm, alarmInfo.toMap());
+    print(result);
   }
 
   Future<List<AlarmInfo>> getAlarms() async {

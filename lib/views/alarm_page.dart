@@ -1,6 +1,5 @@
 import 'package:clock_app/alarm_helper.dart';
 import 'package:clock_app/constants/theme_data.dart';
-import 'package:clock_app/data.dart';
 import 'package:clock_app/models/alarm_info.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,6 @@ class _AlarmPageState extends State<AlarmPage> {
   TextEditingController bodyController = TextEditingController();
   DateTime _alarmTime;
   String _alarmTimeString;
-  bool _isRepeatSelected = false;
   AlarmHelper _alarmHelper = AlarmHelper();
   Future<List<AlarmInfo>> _alarms;
   List<AlarmInfo> _currentAlarms;
@@ -31,6 +29,8 @@ class _AlarmPageState extends State<AlarmPage> {
       // print('------database intialized');
       loadAlarms();
     });
+    // isRepeatSelected = true;
+    // onChange(false);
     super.initState();
   }
 
@@ -67,9 +67,9 @@ class _AlarmPageState extends State<AlarmPage> {
                       var gradientColor = GradientTemplate
                           .gradientTemplate[alarm.gradientColorIndex].colors;
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 32),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                        margin: EdgeInsets.only(bottom: 32),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: gradientColor,
@@ -157,9 +157,11 @@ class _AlarmPageState extends State<AlarmPage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(24)),
                             ),
-                            child: FlatButton(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 16),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 32, vertical: 16),
+                              ),
                               onPressed: () {
                                 _alarmTimeString =
                                     DateFormat('HH:mm').format(DateTime.now());
@@ -176,10 +178,10 @@ class _AlarmPageState extends State<AlarmPage> {
                                     return StatefulBuilder(
                                       builder: (context, setModalState) {
                                         return Container(
-                                          padding: const EdgeInsets.all(32),
+                                          padding: EdgeInsets.all(32),
                                           child: Column(
                                             children: [
-                                              FlatButton(
+                                              TextButton(
                                                 onPressed: () async {
                                                   var selectedTime =
                                                       await showTimePicker(
@@ -213,17 +215,22 @@ class _AlarmPageState extends State<AlarmPage> {
                                                       TextStyle(fontSize: 32),
                                                 ),
                                               ),
-                                              ListTile(
-                                                title: Text('Repeat'),
-                                                trailing: Switch(
-                                                  onChanged: (value) {
-                                                    setModalState(() {
-                                                      _isRepeatSelected = value;
-                                                    });
-                                                  },
-                                                  value: _isRepeatSelected,
-                                                ),
-                                              ),
+                                              RepeatButton(),
+                                              // SwitchListTile(
+                                              //   value: isRepeatSelected,
+                                              //   title: Text('Repeat'),
+                                              //   onChanged: (value) {
+                                              //     onChange(value);
+                                              //   },
+                                              //   // trailing: Switch(
+                                              //   //   value: _isRepeatSelected,
+                                              //   //   onChanged: (value) {
+                                              //   //     setState(() {
+                                              //   //       _isRepeatSelected = value;
+                                              //   //     });
+                                              //   //   },
+                                              //   // ),
+                                              // ),
                                               // ListTile(
                                               //   onTap: () {},
                                               //   title: Text('Sound'),
@@ -276,7 +283,9 @@ class _AlarmPageState extends State<AlarmPage> {
                                               FloatingActionButton.extended(
                                                 onPressed: () => onSaveAlarm(
                                                     titleController.text,
-                                                    bodyController.text, _isRepeatSelected),
+                                                    bodyController.text,
+                                                    RepeatButton
+                                                        .isRepeatSelected),
                                                 icon: Icon(Icons.alarm),
                                                 label: Text('Save'),
                                               ),
@@ -333,6 +342,7 @@ class _AlarmPageState extends State<AlarmPage> {
   void scheduleAlarm(
       DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo,
       {bool isRepeating}) async {
+    print(isRepeating);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
@@ -365,13 +375,11 @@ class _AlarmPageState extends State<AlarmPage> {
           platformChannelSpecifics);
     else
       await flutterLocalNotificationsPlugin.schedule(
-        0,
-        alarmInfo.title,
-        alarmInfo.body,
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
-    
-    
+          0,
+          alarmInfo.title,
+          alarmInfo.body,
+          scheduledNotificationDateTime,
+          platformChannelSpecifics);
   }
 
   void onSaveAlarm(String title, String body, bool _isRepeating) {
@@ -396,5 +404,30 @@ class _AlarmPageState extends State<AlarmPage> {
     _alarmHelper.delete(id);
     //unsubscribe for notification
     loadAlarms();
+  }
+}
+
+class RepeatButton extends StatefulWidget {
+  static bool isRepeatSelected = false;
+  @override
+  _RepeatButtonState createState() => _RepeatButtonState();
+}
+
+class _RepeatButtonState extends State<RepeatButton> {
+  void onChange(bool value) {
+    setState(() {
+      RepeatButton.isRepeatSelected = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      value: RepeatButton.isRepeatSelected,
+      title: Text('Repeat'),
+      onChanged: (value) {
+        onChange(value);
+      },
+    );
   }
 }

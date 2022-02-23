@@ -1,4 +1,3 @@
-import 'package:clock_app/constants/theme_data.dart';
 import 'package:clock_app/enums.dart';
 import 'models/alarm_info.dart';
 import 'models/menu_info.dart';
