@@ -12,14 +12,14 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/debug/AndroidManifest.xml:6:5-66
-14-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/debug/AndroidManifest.xml:6:22-64
+14-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/debug/AndroidManifest.xml:6:5-66
+14-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/debug/AndroidManifest.xml:6:22-64
 15    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-15-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/main/AndroidManifest.xml:5:5-80
-15-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/main/AndroidManifest.xml:5:22-78
+15-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/main/AndroidManifest.xml:5:5-80
+15-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/main/AndroidManifest.xml:5:22-78
 16    <uses-permission android:name="android.permission.VIBRATE" />
-16-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/main/AndroidManifest.xml:6:5-66
-16-->/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/main/AndroidManifest.xml:6:22-63
+16-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/main/AndroidManifest.xml:6:5-66
+16-->/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/main/AndroidManifest.xml:6:22-63
 17
 18    <application
 19        android:name="android.app.Application"
@@ -27,7 +27,7 @@
 20-->[androidx.core:core:1.6.0] /Users/osamawaseem/.gradle/caches/transforms-2/files-2.1/122df2e57d294d1a53db26bbc3b813c1/core-1.6.0/AndroidManifest.xml:24:18-86
 21        android:debuggable="true"
 22        android:icon="@mipmap/ic_launcher"
-23        android:label="flutter_alarm_clock" >
+23        android:label="Alarm App" >
 24        <activity
 25            android:name="com.example.flutter_alarm_clock.MainActivity"
 26            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

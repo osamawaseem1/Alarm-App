@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/osamawaseem/StudioProjects/flutter_alarm_clock/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/osamawaseem/StudioProjects/Alarm-App/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/osamawaseem/StudioProjects/flutter_alarm_clock/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/osamawaseem/StudioProjects/Alarm-App/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

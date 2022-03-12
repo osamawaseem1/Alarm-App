@@ -74,7 +74,13 @@ class _HomePageState extends State<HomePage> {
         return TextButton(
           style: TextButton.styleFrom(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(topRight: Radius.circular(32))),
+                borderRadius: BorderRadius.only(
+                    topRight: currentMenuInfo.title == "Clock"
+                        ? Radius.circular(32)
+                        : Radius.circular(0),
+                    bottomRight: currentMenuInfo.title == "Clock"
+                        ? Radius.circular(0)
+                        : Radius.circular(32))),
             padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0),
             backgroundColor: currentMenuInfo.menuType == value.menuType
                 ? CustomColors.menuBackgroundColor
